@@ -43,17 +43,13 @@ class Authify
      */
     public static function enabledIdentityFields()
     {
-        $identity = config('authify.identity', []);
+        $fields = static::identityFields();
 
-        $fields = [];
-
-        foreach ($identity as $item) {
-            if (! empty($item['status']) && ! empty($item['field'])) {
-                $fields[] = $item['field'];
-            }
+        foreach ($fields as $field) {
+            $fields[] = $field;
         }
 
-        return array_values(array_unique($fields));
+        return array_values($fields);
     }
 
     /**
