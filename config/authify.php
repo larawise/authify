@@ -3,6 +3,53 @@
 return [
     /*
     |--------------------------------------------------------------------------
+    | ℹ️ Authify (Username)
+    |--------------------------------------------------------------------------
+    |
+    | This value defines which request variable or model attribute should be
+    | treated as the "username" identifier during authentication. In Authify,
+    | this can be customized to support multiple login strategies such as
+    | username, email, or phone number.
+    |
+    | The value is used across login, security verification, and session
+    | management flows. You may override it to match your application's
+    | preferred identity field.
+    |
+    */
+    'username' => 'username',
+
+    /*
+    |--------------------------------------------------------------------------
+    | ℹ️ Authify (Phone)
+    |--------------------------------------------------------------------------
+    |
+    | This value defines the name of the request variable or model attribute
+    | representing the user's phone number. Authify uses this field optionally
+    | for login, verification, and recovery flows.
+    |
+    | If your application supports phone-based authentication or security
+    | checks, you may customize this value accordingly.
+    |
+    */
+    'phone' => 'phone',
+
+    /*
+    |--------------------------------------------------------------------------
+    | ℹ️ Authify (Email)
+    |--------------------------------------------------------------------------
+    |
+    | This value defines the name of the request variable or model attribute
+    | representing the user's email address. Authify uses this field optionally
+    | for login, password recovery, and identity verification.
+    |
+    | You may override this value if your application uses a different field
+    | name for email-based authentication.
+    |
+    */
+    'email' => 'email',
+
+    /*
+    |--------------------------------------------------------------------------
     | ℹ️ Authify (Limiters)
     |--------------------------------------------------------------------------
     |
