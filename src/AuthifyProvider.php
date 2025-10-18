@@ -30,5 +30,7 @@ class AuthifyProvider extends PackagifyProvider
         $package->name('authify');
         $package->description('Authify - ');
         $package->version('1.0.0');
+
+        $package->hasConfigurations();
     }
 }
