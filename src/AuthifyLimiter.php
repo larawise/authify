@@ -60,11 +60,11 @@ class AuthifyLimiter
     }
 
     /**
-     * Get the number of attempts for the given key and type.
+     * Get the number of attempts for the given key.
      *
      * @param Request $request
      *
-     * @return mixed
+     * @return int
      */
     public function attempts(Request $request)
     {
@@ -72,7 +72,7 @@ class AuthifyLimiter
     }
 
     /**
-     * Determine if the user has too many failed login attempts.
+     * Determine if the request source has exceeded the allowed number of attempts.
      *
      * @param Request $request
      *
@@ -84,7 +84,7 @@ class AuthifyLimiter
     }
 
     /**
-     * Increment the login attempts for the user.
+     * Increment the action attempts for the user.
      *
      * @param Request $request
      *
@@ -108,7 +108,7 @@ class AuthifyLimiter
     }
 
     /**
-     * Clear the login locks for the given user credentials.
+     * Clear the rate limit lock for the given request source.
      *
      * @param Request $request
      *
