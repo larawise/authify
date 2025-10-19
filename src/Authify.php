@@ -2,7 +2,9 @@
 
 namespace Larawise\Authify;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Password;
 
 class Authify
 {
@@ -37,24 +39,65 @@ class Authify
     }
 
     /**
-     * Get the list of enabled identity fields based on Authify config.
+     * Generate a configurable password validation rule based on authify settings.
      *
-     * @return array<string>
+     * @return Password
      */
-    public static function enabledIdentityFields()
+    public static function passwordRules()
     {
-        return array_values(array_filter(
-            static::identityFields(),
-            fn($field) => static::identityStatus($field)
-        ));
+        $options = config('authify.rules.password');
+
+        $rule = Password::min($options['min']);
+
+        if ($options['max'] > 0) {
+            $rule->max($options['max']);
+        }
+
+        if ($options['mixed_case'] ?? false) {
+            $rule->mixedCase();
+        }
+
+        if ($options['numbers'] ?? false) {
+            $rule->numbers();
+        }
+
+        if ($options['symbols'] ?? false) {
+            $rule->symbols();
+        }
+
+        if ($options['uncompromised']['status']) {
+            $rule->uncompromised($options['uncompromised']['threshold'] ?? 0);
+        }
+
+        return $rule;
     }
 
     /**
-     * Get the list of identity field names used for authentication.
+     * Determine which identity field is actively used in the request.
+     *
+     * @param Request $request
+     *
+     * @return string|null
+     */
+    public static function identityFieldResolve(Request $request)
+    {
+        foreach (self::identityFields(true) as $field) {
+            if ($request->filled($field)) {
+                return $field;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Retrieve identity field names used for authentication.
+     *
+     * @param bool $onlyActive
      *
      * @return array<string>
      */
-    public static function identityFields()
+    public static function identityFields($onlyActive = false)
     {
         $identity = config('authify.identity', []);
 
@@ -62,6 +105,10 @@ class Authify
 
         foreach ($identity as $item) {
             if (! empty($item['field'])) {
+                if ($onlyActive && ! ($item['enabled'] ?? false)) {
+                    continue;
+                }
+
                 $fields[] = $item['field'];
             }
         }
@@ -77,13 +124,24 @@ class Authify
      *
      * @return string|mixed
      */
-    public static function identityNormalize($field, $value)
+    public static function identityPrepare($field, $value)
     {
         return match ($field) {
-            'username'  => Str::of($value)->lower()->trim()->replaceMatches('/[^a-z0-9._-]/i', ''),
-            'email'     => Str::of($value)->lower()->trim()->replaceMatches('/[^a-z0-9@._-]/i', ''),
-            'phone'     => Str::of($value)->trim()->replaceMatches('/[^0-9+]/', ''),
-            default     => $value,
+            'username' => Str::of($value)->lower()
+                ->trim()
+                ->replaceMatches('/[^a-z0-9._-]/i', '')
+                ->toString(),
+
+            'email' => Str::of($value)->lower()
+                ->trim()
+                ->replaceMatches('/[^a-z0-9@._-]/i', '')
+                ->toString(),
+
+            'phone' => Str::of($value)->trim()
+                ->replaceMatches('/[^0-9+]/', '')
+                ->toString(),
+
+            default => $value,
         };
     }
 

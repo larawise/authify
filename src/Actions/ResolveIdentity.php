@@ -15,7 +15,7 @@ use Larawise\Authify\Authify;
  *
  * @see https://docs.larawise.com/ Larawise : Docs
  */
-class CanonicalizeIdentity
+class ResolveIdentity
 {
     /**
      * Handle the incoming request.
@@ -27,12 +27,12 @@ class CanonicalizeIdentity
      */
     public function handle($request, $next)
     {
-        $field = Authify::identityFieldResolve($request);
-
-        if ($field) {
-            $request->merge([
-                $field => Authify::identityPrepare($field, $request->input($field))
-            ]);
+        foreach (Authify::enabledIdentityFields() as $field) {
+            if ($request->has($field)) {
+                $request->merge([
+                    $field => Authify::identityNormalize($field, $request->input($field)),
+                ]);
+            }
         }
 
         return $next($request);

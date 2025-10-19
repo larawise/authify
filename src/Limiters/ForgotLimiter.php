@@ -1,6 +1,6 @@
 <?php
 
-namespace Larawise\Authify;
+namespace Larawise\Authify\Limiters;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;

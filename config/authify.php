@@ -1,6 +1,21 @@
 <?php
 
 return [
+    'rules'                                 => [
+        'password' => [
+            'min'           => 6,
+            'max'           => 0,
+            'mixed_case'    => false,
+            'numbers'       => false,
+            'symbols'       => false,
+            'uncompromised' => [
+                'status'        => false,
+                'threshold'     => 0
+            ],
+            'not_valid'     => false,
+        ],
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | ℹ️ Authify (Identity)
