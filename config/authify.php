@@ -18,16 +18,16 @@ return [
     */
     'identity'                              => [
         'username'  => [
-            'status'    => true,
-            'field'     => 'username',
+            'status'    => (bool) env('AUTHIFY_USERNAME_IDENTITY', true),
+            'field'     => env('AUTHIFY_USERNAME_FIELD', 'username'),
         ],
         'email'     => [
-            'status'    => true,
-            'field'     => 'email',
+            'status'    => (bool) env('AUTHIFY_EMAIL_IDENTITY', true),
+            'field'     => env('AUTHIFY_EMAIL_FIELD', 'email'),
         ],
         'phone'     => [
-            'status'    => true,
-            'field'     => 'phone',
+            'status'    => (bool) env('AUTHIFY_PHONE_IDENTITY', true),
+            'field'     => env('AUTHIFY_PHONE_FIELD', 'phone'),
         ]
     ],
 
@@ -42,41 +42,41 @@ return [
     |
     | Each limiter group includes :
     | - status: Whether the limiter is active.
-    | - delay: Lockout duration in seconds after exceeding attempts.
+    | - decay: Lockout duration in seconds after exceeding attempts.
     | - attempt: Maximum number of allowed attempts within the delay window.
     | - lock: Whether to enforce a hard lock (e.g., manual unlock required).
     |
     */
     'limiters'                              => [
         'login'         => [
-            'status'    => (bool) env('AUTHIFY_LOGIN_LIMITER', true),
-            'delay'     => (int) env('AUTHIFY_LOGIN_DELAY', 900),
-            'attempt'   => (int) env('AUTHIFY_LOGIN_ATTEMPT', 5),
-            'lock'      => (bool) env('AUTHIFY_LOGIN_LOCK', false),
+            'status'        => (bool) env('AUTHIFY_LOGIN_LIMITER', true),
+            'decay_seconds' => (int) env('AUTHIFY_LOGIN_DECAY', 900),
+            'max_attempts'  => (int) env('AUTHIFY_LOGIN_ATTEMPTS', 5),
+            'locking'       => (bool) env('AUTHIFY_LOGIN_LOCK', false),
         ],
         'security'      => [
-            'status'    => (bool) env('AUTHIFY_SECURITY_LIMITER', true),
-            'delay'     => (int) env('AUTHIFY_SECURITY_DELAY', 900),
-            'attempt'   => (int) env('AUTHIFY_SECURITY_ATTEMPT', 5),
-            'lock'      => (bool) env('AUTHIFY_SECURITY_LOCK', false),
+            'status'        => (bool) env('AUTHIFY_SECURITY_LIMITER', true),
+            'decay_seconds' => (int) env('AUTHIFY_SECURITY_DECAY', 900),
+            'max_attempts'  => (int) env('AUTHIFY_SECURITY_ATTEMPTS', 5),
+            'locking'       => (bool) env('AUTHIFY_SECURITY_LOCK', false),
         ],
         'forgot'        => [
-            'status'    => (bool) env('AUTHIFY_FORGOT_LIMITER', true),
-            'delay'     => (int) env('AUTHIFY_FORGOT_DELAY', 900),
-            'attempt'   => (int) env('AUTHIFY_FORGOT_ATTEMPT', 5),
-            'lock'      => (bool) env('AUTHIFY_FORGOT_LOCK', false),
+            'status'        => (bool) env('AUTHIFY_FORGOT_LIMITER', true),
+            'decay_seconds' => (int) env('AUTHIFY_FORGOT_DECAY', 900),
+            'max_attempts'  => (int) env('AUTHIFY_FORGOT_ATTEMPTS', 5),
+            'locking'       => (bool) env('AUTHIFY_FORGOT_LOCK', false),
         ],
         'reset'         => [
-            'status'    => (bool) env('AUTHIFY_RESET_LIMITER', true),
-            'delay'     => (int) env('AUTHIFY_RESET_DELAY', 900),
-            'attempt'   => (int) env('AUTHIFY_RESET_ATTEMPT', 5),
-            'lock'      => (bool) env('AUTHIFY_RESET_LOCK', false),
+            'status'        => (bool) env('AUTHIFY_RESET_LIMITER', true),
+            'decay_seconds' => (int) env('AUTHIFY_RESET_DECAY', 900),
+            'max_attempts'  => (int) env('AUTHIFY_RESET_ATTEMPTS', 5),
+            'locking'       => (bool) env('AUTHIFY_RESET_LOCK', false),
         ],
         'register'      => [
-            'status'    => (bool) env('AUTHIFY_REGISTER_LIMITER', true),
-            'delay'     => (int) env('AUTHIFY_REGISTER_DELAY', 86400),
-            'attempt'   => (int) env('AUTHIFY_REGISTER_ATTEMPT', 5),
-            'lock'      => (bool) env('AUTHIFY_REGISTER_LOCK', false),
+            'status'        => (bool) env('AUTHIFY_REGISTER_LIMITER', true),
+            'decay_seconds' => (int) env('AUTHIFY_REGISTER_DECAY', 86400),
+            'max_attempts'  => (int) env('AUTHIFY_REGISTER_ATTEMPTS', 1),
+            'locking'       => (bool) env('AUTHIFY_REGISTER_LOCK', false),
         ]
     ],
 ];
