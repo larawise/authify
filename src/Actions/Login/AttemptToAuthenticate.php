@@ -5,7 +5,6 @@ namespace Larawise\Authify\Actions\Login;
 use Illuminate\Contracts\Auth\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-use Larawise\Authify\Authify;
 use Larawise\Authify\Limiters\LoginLimiter;
 
 class AttemptToAuthenticate
@@ -52,14 +51,7 @@ class AttemptToAuthenticate
             $request->input('guard', 'web')
         );
 
-        if ($guard->attempt(
-            $request->only(Authify::enabledIdentityFields(), 'password'),
-            $request->boolean('remember'))
-        ) {
-            return $next($request);
-        }
 
-        $this->throwFailedAuthenticationException($request);
     }
 
     /**
@@ -74,8 +66,5 @@ class AttemptToAuthenticate
     {
         $this->limiter->increment($request);
 
-        throw ValidationException::withMessages([
-            Fortify::username() => [trans('auth.failed')],
-        ]);
     }
 }

@@ -16,7 +16,7 @@ use Illuminate\Routing\Controller;
  *
  * @see https://docs.larawise.com/ Larawise : Docs
  */
-class AuthController extends Controller
+class ForgotController extends Controller
 {
     /**
      * The guard implementation.
