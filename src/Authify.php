@@ -8,6 +8,9 @@ use Illuminate\Validation\Rules\Password;
 
 class Authify
 {
+    use Concerns\HandlesRoutes,
+        Concerns\InteractsWithLocalization;
+
     /**
      * Get the name of the username request variable / field.
      *
